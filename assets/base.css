@@ -4213,3 +4213,10 @@ product-recommendations:has([data-has-recommendations='false']) {
     translate: 0px var(--atc-destination, 0px);
   }
 }
+
+.product-desc-title {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1;
+  margin-block-end: 5px;
+}
