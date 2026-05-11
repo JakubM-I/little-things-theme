@@ -1,0 +1,46 @@
+{% liquid
+    assign specs_keys =  'section_1,section_2,section_3' | split: ','
+%}
+
+<div class="product-specs">
+  {% for key in specs_keys %}
+    {% assign raw = product.metafields.specs[key].value %}
+    {% if raw != blank %}
+      {% assign section_data = raw %}
+
+      <div class="specs-group">
+        {% if section_data.title != blank %}
+          <h3 class="specs-group__title">{{ section_data.title }}</h3>
+        {% endif %}
+
+        <dl class="specs-group__list">
+          {% for item in section_data.items %}
+            <div class="specs-row">
+              <dt class="specs-row__label">{{ item.label }}</dt>
+              <dd class="specs-row__value">{{ item.value }}</dd>
+            </div>
+          {% endfor %}
+        </dl>
+      </div>
+    {% endif %}
+  {% endfor %}
+</div>
+
+{% schema %}
+{
+  "name": "Dane techniczne",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Nagłówek sekcji",
+      "default": "Dane techniczne"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Dane techniczne"
+    }
+  ]
+}
+{% endschema %}
