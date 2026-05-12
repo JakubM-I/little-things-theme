@@ -44,7 +44,7 @@
       }
     },
     "main": {
-      "type": "main-blog",
+      "type": "main-blog-featured-post",
       "blocks": {
         "title": {
           "type": "text",
@@ -156,6 +156,8 @@
         "title"
       ],
       "settings": {
+        "featured_metafield_namespace": "custom",
+        "featured_metafield_key": "wpis_wyrozniony",
         "color_scheme": "",
         "padding-block-start": 48,
         "padding-block-end": 48

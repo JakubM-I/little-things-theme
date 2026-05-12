@@ -1,0 +1,191 @@
+<script
+  src="{{ 'blog-posts-list.js' | asset_url }}"
+  type="module"
+  fetchpriority="low"
+></script>
+
+{% liquid
+  assign featured_metafield_namespace = section.settings.featured_metafield_namespace | default: 'custom'
+  assign featured_metafield_key = section.settings.featured_metafield_key | default: 'wpis_wyrozniony'
+  assign featured_article = blank
+
+  for article in blog.articles
+    assign featured_metafield = article.metafields[featured_metafield_namespace][featured_metafield_key]
+
+    if featured_metafield.value == true
+      assign featured_article = article
+      break
+    endif
+  endfor
+%}
+
+<blog-posts-list section-id="{{ section.id }}">
+  <div class="section-background color-{{ section.settings.color_scheme }}"></div>
+  <div
+    class="
+      section
+      color-{{ section.settings.color_scheme }}
+      blog-posts
+      spacing-style
+      size-style
+    "
+    data-testid="blog-posts"
+    style="{% render 'spacing-style', settings: section.settings %}"
+  >
+    {% content_for 'blocks' %}
+
+    <div
+      ref="grid"
+      class="blog-posts-container"
+    >
+      {% if featured_article != blank %}
+        {% style %}
+          [data-blog-index="{{ section.id }}-1"] {
+            --col-span: 6;
+            --blog-post-card-scale: 1;
+          }
+
+          @media screen and (max-width: 749px) {
+            [data-blog-index="{{ section.id }}-1"] {
+              --col-span: 6;
+              --blog-post-card-scale: 0.5;
+            }
+          }
+        {% endstyle %}
+        <div
+          class="blog-post-item blog-post-item--horizontal"
+          data-testid="blog-post-item"
+          data-blog-index="{{ section.id }}-1"
+        >
+          {% content_for 'block', id: 'static-blog-post-card', type: '_blog-post-card', article: featured_article %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</blog-posts-list>
+
+{% stylesheet %}
+  /**
+   * Blog posts page layout
+   */
+  .blog-posts {
+    --page-content-width: var(--narrow-page-width);
+    --page-width: calc(var(--page-content-width) + (var(--page-margin) * 2));
+    --columns-gap: 36px;
+    --rows-gap: 36px;
+  }
+
+  .blog-posts-container {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1rem;
+    width: 100%;
+    column-gap: var(--columns-gap);
+    row-gap: var(--rows-gap);
+  }
+
+  /**
+   * Blog post item grid positioning and scaling.
+   */
+  .blog-post-item {
+    grid-column: span var(--col-span);
+  }
+
+  /**
+   * When there's no image, the blog post item has a border.
+   */
+  .blog-post-item {
+    border: 1px solid rgb(var(--color-foreground-rgb) / var(--opacity-20));
+    padding: 0 1rem 1rem;
+  }
+
+  .blog-post-item:has(.blog-post-card__image-container) {
+    border: none;
+    padding: 0;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Featured blog post",
+  "blocks": [
+    {
+      "type": "@theme"
+    },
+    {
+      "type": "@app"
+    },
+    {
+      "type": "text"
+    },
+    {
+      "type": "icon"
+    },
+    {
+      "type": "image"
+    },
+    {
+      "type": "button"
+    },
+    {
+      "type": "video"
+    },
+    {
+      "type": "group"
+    },
+    {
+      "type": "spacer"
+    },
+    {
+      "type": "_divider"
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "featured_metafield_namespace",
+      "label": "Featured metafield namespace",
+      "default": "custom"
+    },
+    {
+      "type": "text",
+      "id": "featured_metafield_key",
+      "label": "Featured metafield key",
+      "default": "wpis_wyrozniony"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.color_scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ]
+}
+{% endschema %}
