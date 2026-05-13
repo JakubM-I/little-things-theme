@@ -27,7 +27,7 @@
           {%- assign image_alt = related_product.featured_image.alt | default: related_product.title -%}
           <li class="related-products-list__item">
             <a class="related-products-list__link" href="{{ related_product.url }}">
-              <span class="related-products-list__media" style="--related-products-list-image-ratio: {{ block_settings.image_ratio }};">
+              <div class="related-products-list__media" style="--related-products-list-image-ratio: {{ block_settings.image_ratio }};">
                 {%- if related_product.featured_image != blank -%}
                   {{
                     related_product.featured_image
@@ -41,17 +41,17 @@
                 {%- else -%}
                   {{ 'product-apparel-1' | placeholder_svg_tag: 'related-products-list__placeholder' }}
                 {%- endif -%}
-              </span>
+              </div>
 
-              <span class="related-products-list__content">
-                <span class="related-products-list__title">{{ related_product.title }}</span>
-                <span class="related-products-list__price">
+              <div class="related-products-list__content">
+                <div class="related-products-list__title">{{ related_product.title }}</div>
+                <div class="related-products-list__price">
                   {% render 'price',
                     product_resource: related_product,
                     show_sale_price_first: block_settings.show_sale_price_first
                   %}
-                </span>
-              </span>
+                </div>
+              </div>
             </a>
           </li>
           {%- assign rendered_products = rendered_products | plus: 1 -%}
@@ -63,7 +63,7 @@
           {%- assign image_alt = related_product.featured_image.alt | default: related_product.title -%}
           <li class="related-products-list__item related-products-list__item--unavailable">
             <a class="related-products-list__link" href="{{ related_product.url }}">
-              <span class="related-products-list__media" style="--related-products-list-image-ratio: {{ block_settings.image_ratio }};">
+              <div class="related-products-list__media" style="--related-products-list-image-ratio: {{ block_settings.image_ratio }};">
                 {%- if related_product.featured_image != blank -%}
                   {{
                     related_product.featured_image
@@ -77,17 +77,17 @@
                 {%- else -%}
                   {{ 'product-apparel-1' | placeholder_svg_tag: 'related-products-list__placeholder' }}
                 {%- endif -%}
-              </span>
+              </div>
 
-              <span class="related-products-list__content">
-                <span class="related-products-list__title">{{ related_product.title }}</span>
-                <span class="related-products-list__price">
+              <div class="related-products-list__content">
+                <div class="related-products-list__title">{{ related_product.title }}</div>
+                <div class="related-products-list__price">
                   {% render 'price',
                     product_resource: related_product,
                     show_sale_price_first: block_settings.show_sale_price_first
                   %}
-                </span>
-              </span>
+                </div>
+              </div>
             </a>
           </li>
           {%- assign rendered_products = rendered_products | plus: 1 -%}
@@ -116,10 +116,17 @@
     list-style: none;
   }
 
+  .related-products-list__item {
+    display: block;
+    min-width: 0;
+  }
+
   .related-products-list__link {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-rows: auto auto;
     gap: var(--padding-xs);
+    width: 100%;
+    height: 100%;
     color: inherit;
     text-decoration: none;
   }
@@ -149,16 +156,31 @@
     display: grid;
     gap: var(--padding-3xs);
     min-width: 0;
+    align-content: start;
   }
 
   .related-products-list__title {
+    display: block;
     overflow-wrap: anywhere;
     font-size: 0.95rem;
     line-height: 1.35;
   }
 
   .related-products-list__price {
+    display: block;
     font-size: 0.9rem;
+    line-height: 1.3;
+  }
+
+  .related-products-list__price .price__regular,
+  .related-products-list__price .price__sale {
+    display: block;
+  }
+
+  .related-products-list__price .price-item__group {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.35em;
   }
 
   .related-products-list__item--unavailable {
