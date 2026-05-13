@@ -250,7 +250,10 @@
               "settings": {
                 "heading": "Produkty powiązane",
                 "max_products": 6,
-                "image_size": 72,
+                "columns": 3,
+                "mobile_columns": 2,
+                "image_ratio": "1",
+                "gap": 16,
                 "show_sale_price_first": true,
                 "padding-block-start": 0,
                 "padding-block-end": 0,
