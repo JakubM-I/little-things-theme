@@ -251,7 +251,7 @@
                 "heading": "Produkty powiązane",
                 "max_products": 6,
                 "columns": 3,
-                "mobile_columns": 2,
+                "mobile_columns": "2",
                 "image_ratio": "1",
                 "gap": 16,
                 "show_sale_price_first": true,
