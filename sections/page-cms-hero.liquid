@@ -1,0 +1,223 @@
+{% liquid
+  assign hero_title = page.metafields.custom.cms_hero_title.value | default: section.settings.fallback_title | default: page.title
+  assign hero_subtitle = page.metafields.custom.cms_hero_subtitle.value | default: section.settings.fallback_subtitle
+  assign hero_image = page.metafields.custom.cms_hero_image.value | default: section.settings.fallback_image
+%}
+
+<div
+  class="section-background cms-page-hero__background"
+  style="background-color: {{ section.settings.background_color }};"
+></div>
+<section
+  class="section page-width-content cms-page-hero{% if hero_image != blank %} cms-page-hero--has-media{% endif %}"
+  style="
+    --cms-page-hero-title-color: {{ section.settings.title_color }};
+    --cms-page-hero-subtitle-color: {{ section.settings.subtitle_color }};
+    --cms-page-hero-title-size: {{ section.settings.title_size }}px;
+    --cms-page-hero-subtitle-size: {{ section.settings.subtitle_size }}px;
+    --cms-page-hero-padding-top: {{ section.settings.padding_top }}px;
+    --cms-page-hero-padding-bottom: {{ section.settings.padding_bottom }}px;
+  "
+>
+  <div class="cms-page-hero__inner">
+    <div class="cms-page-hero__content">
+      {% if hero_title != blank %}
+        <h1 class="cms-page-hero__title">{{ hero_title }}</h1>
+      {% endif %}
+
+      {% if hero_subtitle != blank %}
+        <p class="cms-page-hero__subtitle">{{ hero_subtitle }}</p>
+      {% endif %}
+    </div>
+
+    {% if hero_image != blank %}
+      <div class="cms-page-hero__media">
+        {{
+          hero_image
+          | image_url: width: 1600
+          | image_tag:
+            widths: '480, 720, 960, 1200, 1600',
+            sizes: '(min-width: 990px) 50vw, 100vw',
+            alt: hero_image.alt,
+            class: 'cms-page-hero__image',
+            loading: 'eager'
+        }}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% stylesheet %}
+  .cms-page-hero {
+    padding-block: var(--cms-page-hero-padding-top) var(--cms-page-hero-padding-bottom);
+  }
+
+  .cms-page-hero__inner {
+    display: grid;
+    gap: clamp(32px, 6vw, 80px);
+    align-items: center;
+  }
+
+  .cms-page-hero__content {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .cms-page-hero__title,
+  .cms-page-hero__subtitle {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .cms-page-hero__title {
+    color: var(--cms-page-hero-title-color);
+    font-family: var(--font-primary--family);
+    font-size: min(var(--cms-page-hero-title-size), 40px);
+    font-weight: 600;
+    letter-spacing: 0;
+    line-height: 1.05;
+  }
+
+  .cms-page-hero__subtitle {
+    color: var(--cms-page-hero-subtitle-color);
+    font-family: var(--font-primary--family);
+    font-size: min(var(--cms-page-hero-subtitle-size), 22px);
+    letter-spacing: 0;
+    line-height: 1.45;
+    max-width: 42rem;
+  }
+
+  .cms-page-hero__media {
+    min-height: 260px;
+  }
+
+  .cms-page-hero__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 260px;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  @media screen and (min-width: 750px) {
+    .cms-page-hero--has-media .cms-page-hero__inner {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+
+    .cms-page-hero__title {
+      font-size: var(--cms-page-hero-title-size);
+    }
+
+    .cms-page-hero__subtitle {
+      font-size: var(--cms-page-hero-subtitle-size);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "CMS page hero",
+  "class": "section-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Metafields"
+    },
+    {
+      "type": "paragraph",
+      "content": "Hero reads page metafields: custom.cms_hero_title, custom.cms_hero_subtitle, custom.cms_hero_image."
+    },
+    {
+      "type": "text",
+      "id": "fallback_title",
+      "label": "Fallback title"
+    },
+    {
+      "type": "textarea",
+      "id": "fallback_subtitle",
+      "label": "Fallback subtitle"
+    },
+    {
+      "type": "image_picker",
+      "id": "fallback_image",
+      "label": "Fallback image"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#f7f2ec"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#1f1f1f"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size",
+      "min": 28,
+      "max": 84,
+      "step": 1,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle color",
+      "default": "#4f4a45"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "label": "Subtitle size",
+      "min": 14,
+      "max": 34,
+      "step": 1,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top",
+      "min": 24,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "default": 72
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom",
+      "min": 24,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "default": 72
+    }
+  ],
+  "presets": [
+    {
+      "name": "CMS page hero"
+    }
+  ]
+}
+{% endschema %}
