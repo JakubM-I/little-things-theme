@@ -6,13 +6,15 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "sections": {
     "cms-hero": {
       "type": "page-cms-hero",
       "settings": {
-        "fallback_title": "",
+        "fallback_title": "{{ page.metafields.custom.cms_hero_title.value }}",
         "fallback_subtitle": "",
+        "fallback_image": "{{ page.metafields.custom.cms_hero_image.value }}",
         "background_color": "#f7f2ec",
         "title_color": "#1f1f1f",
         "title_size": 56,
