@@ -49,7 +49,15 @@
 
 {% stylesheet %}
   .cms-page-hero {
+    --page-content-width: 1440px;
+    --page-width: calc(var(--page-content-width) + (var(--page-margin) * 2));
+
     padding-block: var(--cms-page-hero-padding-top) var(--cms-page-hero-padding-bottom);
+  }
+
+  .cms-page-hero__background {
+    width: min(1440px, calc(100% - 32px));
+    margin-inline: auto;
   }
 
   .cms-page-hero__inner {
@@ -102,6 +110,10 @@
   }
 
   @media screen and (min-width: 750px) {
+    .cms-page-hero__background {
+      width: min(1440px, calc(100% - 80px));
+    }
+
     .cms-page-hero--has-media .cms-page-hero__inner {
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     }
