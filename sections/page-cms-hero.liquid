@@ -51,8 +51,16 @@
   .cms-page-hero {
     --page-content-width: 1440px;
     --page-width: calc(var(--page-content-width) + (var(--page-margin) * 2));
+    --cms-page-hero-content-padding: clamp(
+      24px,
+      6vw,
+      max(var(--cms-page-hero-padding-top), var(--cms-page-hero-padding-bottom))
+    );
 
-    padding-block: var(--cms-page-hero-padding-top) var(--cms-page-hero-padding-bottom);
+    display: block;
+    width: min(1440px, calc(100% - 32px));
+    margin-inline: auto;
+    padding: 0;
   }
 
   .cms-page-hero__background {
@@ -62,14 +70,16 @@
 
   .cms-page-hero__inner {
     display: grid;
-    gap: clamp(32px, 6vw, 80px);
-    align-items: center;
+    gap: 0;
+    align-items: stretch;
   }
 
   .cms-page-hero__content {
     display: flex;
     flex-direction: column;
     gap: 18px;
+    justify-content: center;
+    padding: var(--cms-page-hero-content-padding);
   }
 
   .cms-page-hero__title,
@@ -110,6 +120,10 @@
   }
 
   @media screen and (min-width: 750px) {
+    .cms-page-hero {
+      width: min(1440px, calc(100% - 80px));
+    }
+
     .cms-page-hero__background {
       width: min(1440px, calc(100% - 80px));
     }
@@ -124,6 +138,10 @@
 
     .cms-page-hero__subtitle {
       font-size: var(--cms-page-hero-subtitle-size);
+    }
+
+    .cms-page-hero__image {
+      aspect-ratio: auto;
     }
   }
 {% endstylesheet %}

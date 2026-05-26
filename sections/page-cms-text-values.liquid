@@ -63,9 +63,17 @@
   .cms-text-values {
     --page-content-width: 1440px;
     --page-width: calc(var(--page-content-width) + (var(--page-margin) * 2));
+    --cms-text-values-padding: clamp(
+      10px,
+      7vw,
+      max(var(--cms-text-values-padding-top), var(--cms-text-values-padding-bottom))
+    );
 
     color: var(--cms-text-values-text-color);
-    padding-block: var(--cms-text-values-padding-top) var(--cms-text-values-padding-bottom);
+    display: block;
+    width: min(1440px, calc(100% - 32px));
+    margin-inline: auto;
+    padding: var(--cms-text-values-padding);
   }
 
   .cms-text-values__background {
@@ -184,6 +192,10 @@
   }
 
   @media screen and (min-width: 750px) {
+    .cms-text-values {
+      width: min(1440px, calc(100% - 80px));
+    }
+
     .cms-text-values__background {
       width: min(1440px, calc(100% - 80px));
     }
